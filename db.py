@@ -30,5 +30,17 @@ def createDB(nameDB):
 
 
 
+def deleteDB(nameDB):
+    conn = pymysql.connect(
+        host = "localhost",
+        user = "root",
+        password="Ruta88790"
+    )
 
-#def createTable():
+    cursor = conn.cursor()
+
+    sql = 'drop database '+nameDB+''
+
+    cursor.execute(sql)
+
+    
