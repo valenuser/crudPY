@@ -1,10 +1,14 @@
 import pymysql
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def showDB():
     conn = pymysql.connect(
-        host = "localhost",
-        user = "root",
-        password = "Ruta88790"
+        host = os.getenv('host'),
+        user = os.getenv('user'),
+        password = os.getenv('password')
     )
 
     cursor = conn.cursor()
@@ -18,23 +22,24 @@ def showDB():
 
 def createDB(nameDB):
     conn = pymysql.connect(
-        host = "localhost",
-        user = "root",
-        password="Ruta88790"
+        host = os.getenv('host'),
+        user = os.getenv('user'),
+        password = os.getenv('password')
     )
 
     cursor = conn.cursor()
     sql = 'create database '+nameDB+''
     cursor.execute(sql)
     conn.commit()
+    conn.close()
 
 
 
 def deleteDB(nameDB):
     conn = pymysql.connect(
-        host = "localhost",
-        user = "root",
-        password="Ruta88790"
+        host = os.getenv('host'),
+        user = os.getenv('user'),
+        password = os.getenv('password')
     )
 
     cursor = conn.cursor()
@@ -44,3 +49,13 @@ def deleteDB(nameDB):
     cursor.execute(sql)
 
     
+
+def createTable(nameDB,nameTable,nameCampo,tipoDato,signos,incrementable,questionPK):
+    conn = pymysql.connect(
+        host = os.getenv('host'),
+        user = os.getenv('user'),
+        password = os.getenv('password'),
+        database= nameDB
+    )
+
+    cursor = conn.cursor
