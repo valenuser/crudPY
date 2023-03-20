@@ -72,7 +72,7 @@ def createTable(nameDB,nameTable,nameCampo,tipoDato,signos,incrementable,questio
     elif signos == ' ':
         sql = 'create table '+nameTable+'('+nameCampo+' '+tipoDato+' '+incrementable+' '+questionPK+')'
     else:
-        sql = 'create table '+nameTable+'('+nameCampo+' '+tipoDato+' '+n+''+questionPK+')'
+        sql = 'create table '+nameTable+'('+nameCampo+' '+tipoDato+' '+signos+' '+incrementable+' '+questionPK+')'
 
     cursor.execute(sql)
 
@@ -90,9 +90,6 @@ def addCampo(nameDB,nameTable,nameCampo,tipoDato,signos,incrementable,questionPK
 
     cursor = conn.cursor()
 
-    if questionPK == 'PRIMARY KEY':
-        sql = 'alter table'+nameTable+' add column '+nameCampo+' '+tipoDato+' '+signos+' '+incrementable+' '+questionPK+''
-
 
     if incrementable == ' ' and signos == ' ':
         sql = 'alter table '+nameTable+' add column '+nameCampo+' '+tipoDato+' '+questionPK+''
@@ -100,6 +97,8 @@ def addCampo(nameDB,nameTable,nameCampo,tipoDato,signos,incrementable,questionPK
         sql = 'alter table '+nameTable+' add column '+nameCampo+' '+tipoDato+' '+signos+' '+questionPK+''
     elif signos == ' ':
         sql = 'alter table '+nameTable+' add column '+nameCampo+' '+tipoDato+' '+incrementable+' '+questionPK+''
+    else:
+        sql = 'alter table '+nameTable+' add column'+nameCampo+' '+tipoDato+' '+signos+' '+incrementable+' '+questionPK+''
 
     cursor.execute(sql)
 

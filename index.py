@@ -6,14 +6,19 @@ from db import createDB as create
 from db import showDB as show
 from db import deleteDB as delete
 from db import createTable as addTable
-from db import addCampo
+from db import addCampo as newCampos
 
 
 #crear funcion para crear campos
 
 def addCampo(nameDB,nameTable):
         nombreCampo = input('Como quieres que se llame el campo? ')
-        tipoDato = input('Que tipo de dato quieres que sea? ')
+        dato = input('Que tipo de dato quieres que sea? ')
+
+        if dato != 'int':
+            tipoDato = dato +'(60)'
+        else:
+            tipoDato = dato
         signos = input('Quieres que puedan introducirse signos?(y/n) ')
 
         while True:
@@ -64,11 +69,11 @@ def addCampo(nameDB,nameTable):
                     questionNull = input('Deseas que el dato sea nulo o no nulo?(null/not null)')     
 
             if questionNull == 'null':
-                questionPK = 'null'
+                questionPK = 'NULL'
             else:
-                questionPK = 'not null'  
+                questionPK = 'NOT NULL'  
 
-        addCampo(nameDB,nameTable,nombreCampo,tipoDato,signos,incrementable,questionPK)
+        newCampos(nameDB,nameTable,nombreCampo,tipoDato,signos,incrementable,questionPK)
 
         questionCampo = input('Deseas añadir otro campo?(y/n) ')
 
@@ -136,9 +141,9 @@ def createTable(nameDB):
                     questionNull = input('Deseas que el dato sea nulo o no nulo?(null/not null)')     
 
             if questionNull == 'null':
-                questionPK = 'null'
+                questionPK = 'NULL'
             else:
-                questionPK = 'not null'  
+                questionPK = 'NOT NULL'  
 
         addTable(nameDB,nombreTable,nombreCampo,tipoDato,signos,incrementable,questionPK)
 
@@ -190,6 +195,34 @@ def createDB():
         
     if addDB == 'y':
         createDB()
+
+
+
+def deleteDB():
+    showDB = show()
+
+    print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+    nombreDB = input('Que base de datos desea eliminar? ')
+
+    delete(nombreDB)
+
+    newDB = show()
+
+    print(tabulate(newDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+    choose = input('Deseas eliminar otra base de datos?(y/n) ')
+    
+
+    while True:
+        if choose == 'y' or choose == 'n':
+            break
+        else:
+            print('Solo puedes responder escriibiendo "y" para afirmar o "n" para negar')
+            choose = input('Deseas eliminar otra base de datos?(y/n) ')
+
+    if choose == 'y':
+        deleteDB()
             
 # ola = show()
 
@@ -223,7 +256,7 @@ def createDB():
 #print(tabulate(lista,headers=['cita','hola']))
 
 #---------- menu ---------
-list_menu = ['Crear base de datos','Crear tablas','Ver todas las bases de datos disponibles o los datos de una tabla','Actualizar datos de una tabla','Eliminar una base de datos o una tabla']
+list_menu = ['Crear base de datos','Crear tablas','Ver todas las bases de datos disponibles','Actualizar datos de una tabla','Eliminar una base de datos']
 
 while True:
     print('-------- CRUD PYTHON / MYSQL --------')
@@ -245,6 +278,34 @@ while True:
     
     if choose == 0:
          createDB()
+
+    elif choose == 1:
+
+        while True:
+            showDB = show()
+
+            print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+            chooseDB = input('Que base de datos deseas añadirle una o varias tablas? ')
+
+            chooseCheck = False
+
+            for i in showDB:
+                if chooseDB == i[0]:
+                    chooseCheck = True
+
+            if chooseCheck == True:
+                createTable(chooseDB)
+                break
+            else:
+                print('Base de datos no encontrada.\n')
+
+    elif choose == 2:
+        showDB = show()
+        print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+    elif choose == 4:
+        deleteDB()
     
     end_Programme = input('Deseas seguir en el programa?(y/n) ')
     while True:
