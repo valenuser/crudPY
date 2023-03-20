@@ -104,3 +104,38 @@ def addCampo(nameDB,nameTable,nameCampo,tipoDato,signos,incrementable,questionPK
 
     conn.commit()
     conn.close()
+
+
+
+def showTable(nameDB):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        password=os.getenv('password'),
+        database=nameDB
+    )
+
+    cursor = conn.cursor()
+
+    sql = 'SHOW TABLES'
+
+    cursor.execute(sql)
+
+    return cursor.fetchall()
+
+
+def showDataTable(nameDB,nameTable):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        password=os.getenv('password'),
+        database=nameDB
+    )
+
+    cursor = conn.cursor()
+
+    sql = 'SELECT * FROM '+nameTable+''
+
+    cursor.execute(sql)
+
+    return cursor.fetchall()

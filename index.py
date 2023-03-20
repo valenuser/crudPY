@@ -7,6 +7,8 @@ from db import showDB as show
 from db import deleteDB as delete
 from db import createTable as addTable
 from db import addCampo as newCampos
+from db import showTable 
+from db import showDataTable
 
 
 #crear funcion para crear campos
@@ -303,6 +305,47 @@ while True:
     elif choose == 2:
         showDB = show()
         print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+    elif choose == 3:
+
+        while True:
+            showDB = show()
+
+            print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+            chooseDB = input('Que base de datos deseas añadirle una o varias tablas? ')
+
+            chooseCheck = False
+
+            for i in showDB:
+                if chooseDB == i[0]:
+                    chooseCheck = True
+
+            if chooseCheck == True:
+
+                while True:
+                    tables = showTable(chooseDB)
+
+                    print(tabulate(tables,headers=['TABLAS'],tablefmt='psql'))
+
+                    chooseTable = input('Que tabla deseas actualizar? ')
+
+                    tableCheck = False    
+
+                    for i in tables:
+                        if chooseTable == i[0]:
+                            tableCheck = True
+
+                    if tableCheck == True:
+                        data = showDataTable(chooseDB,chooseTable)
+                        print(tabulate(data,tablefmt='psql'))                       
+                        break
+                    else:
+                        print('Tabla no encontrada.')
+
+                break
+            else:
+                print('Base de datos no encontrada.\n')
 
     elif choose == 4:
         deleteDB()
