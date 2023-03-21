@@ -139,3 +139,56 @@ def showDataTable(nameDB,nameTable):
     cursor.execute(sql)
 
     return cursor.fetchall()
+
+
+def showColumns(nameDB,nameTable):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        password=os.getenv('password'),
+        database=nameDB
+    )
+
+    cursor = conn.cursor()
+
+    sql = 'SHOW COLUMNS FROM '+nameTable+''
+
+    cursor.execute(sql)
+
+    return cursor.fetchall()
+
+
+
+def updateData(nameDB,nameTable,column,dato,idColumn,idName):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        password=os.getenv('password'),
+        database=nameDB
+    )
+
+    cursor = conn.cursor()
+
+    sql = "update "+nameTable+" set "+column+"='"+dato+"' where "+idName+"= "+idColumn+" "
+
+    cursor.execute(sql)
+
+    conn.commit()
+    conn.close()
+
+
+def showUpdate(nameDB,nameTable,column,idColumn,idName):
+    conn = pymysql.connect(
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        password=os.getenv('password'),
+        database=nameDB
+    )
+
+    cursor = conn.cursor()
+
+    sql = 'select '+column+' from '+nameTable+' where '+idName+'='+idColumn+''
+
+    cursor.execute(sql)
+
+    return cursor.fetchall()

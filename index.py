@@ -9,6 +9,9 @@ from db import createTable as addTable
 from db import addCampo as newCampos
 from db import showTable 
 from db import showDataTable
+from db import showColumns
+from db import updateData
+from db import showUpdate
 
 
 #crear funcion para crear campos
@@ -225,6 +228,82 @@ def deleteDB():
 
     if choose == 'y':
         deleteDB()
+
+
+
+
+def updateTable():
+        while True:
+            showDB = show()
+
+            print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
+
+            chooseDB = input('Que base de datos deseas añadirle una o varias tablas? ')
+
+            chooseCheck = False
+
+            for i in showDB:
+                if chooseDB == i[0]:
+                    chooseCheck = True
+
+            if chooseCheck == True:
+
+                while True:
+                    tables = showTable(chooseDB)
+
+                    print(tabulate(tables,headers=['TABLAS'],tablefmt='psql'))
+
+                    chooseTable = input('Que tabla deseas actualizar? ')
+
+                    tableCheck = False    
+
+                    for i in tables:
+                        if chooseTable == i[0]:
+                            tableCheck = True
+
+                    if tableCheck == True:
+                        data = showDataTable(chooseDB,chooseTable)
+                        columns = showColumns(chooseDB,chooseTable)
+                        print(tabulate(data,tablefmt='psql'))    
+                        print(tabulate(columns,tablefmt='psql'))    
+
+                        while True:
+                            chooseColumn = input('Que columna deseas actualizar? ')
+                            idName = input('Escribe el nombre de la columna que contiene el id: ')
+                            datoColumn = input('Escribe el id de la columna a actualizar: ')
+                            columnCheck = False
+                            for i in columns:
+                                if chooseColumn == i[0]:
+                                    columnCheck = True   
+
+                            if columnCheck == True:
+                                dato = input('Escribe el nuevo dato: ') 
+                                updateData(chooseDB,chooseTable,chooseColumn,dato,datoColumn,idName)
+                                resultado = showUpdate(chooseDB,chooseTable,chooseColumn,datoColumn,idName)
+
+                                print(tabulate(resultado,headers=['actualizacion'],tablefmt='psql'))
+                                break
+                            else:
+                                print('Debes escribir una columna que exista.\n')
+
+                        break                   
+                    else:
+                        print('Tabla no encontrada.Elige una tabla que exista.')
+
+
+                end_update = input('Deseas actualizar otra columna?(y/n) ')
+
+                while True:
+                    if end_update == 'y' or end_update == 'n':
+                        break
+                    else:
+                        print('Solo puedes responder con "y" para afirmar o "n" para negar.')
+                        end_update = input('Deseas actualizar otra columna?(y/n) ')
+
+                if end_update == 'n':
+                    break
+            else:
+                print('Base de datos no encontrada.Elige una base de datos que exista.\n')
             
 # ola = show()
 
@@ -308,44 +387,7 @@ while True:
 
     elif choose == 3:
 
-        while True:
-            showDB = show()
-
-            print(tabulate(showDB,headers=['BASES DE DATOS'],tablefmt='psql'))
-
-            chooseDB = input('Que base de datos deseas añadirle una o varias tablas? ')
-
-            chooseCheck = False
-
-            for i in showDB:
-                if chooseDB == i[0]:
-                    chooseCheck = True
-
-            if chooseCheck == True:
-
-                while True:
-                    tables = showTable(chooseDB)
-
-                    print(tabulate(tables,headers=['TABLAS'],tablefmt='psql'))
-
-                    chooseTable = input('Que tabla deseas actualizar? ')
-
-                    tableCheck = False    
-
-                    for i in tables:
-                        if chooseTable == i[0]:
-                            tableCheck = True
-
-                    if tableCheck == True:
-                        data = showDataTable(chooseDB,chooseTable)
-                        print(tabulate(data,tablefmt='psql'))                       
-                        break
-                    else:
-                        print('Tabla no encontrada.')
-
-                break
-            else:
-                print('Base de datos no encontrada.\n')
+        updateTable()
 
     elif choose == 4:
         deleteDB()
